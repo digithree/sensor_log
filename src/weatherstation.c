@@ -35,7 +35,7 @@
 #define PERIODIC_UPDATE_MS      15 * 60 * 1000
 /** Time (in ms) between scrolling updates. Lower means faster scrolling
  *  between screens. */
-//#define ANIMATION_UPDATE_MS     50
+#define ANIMATION_UPDATE_MS     50
 /** Voltage defined to indicate dead battery. */
 #define LOW_BATTERY_THRESHOLD   2800
 
@@ -81,11 +81,11 @@ static volatile int UPTIME_TICKS = 0;
 /** Timer used for timing out gesturemode to save power. */
 RTCDRV_TimerID_t gestureTimeoutTimerId;
 /** Timer used for counting milliseconds. Used for gesture detection. */
-//RTCDRV_TimerID_t millisecondsTimerId;
+RTCDRV_TimerID_t millisecondsTimerId;
 /** Timer used for periodic update of the measurements. */
 RTCDRV_TimerID_t periodicUpdateTimerId;
 /** Timer used for animations (swiping) */
-//RTCDRV_TimerID_t animationTimerId;
+RTCDRV_TimerID_t animationTimerId;
 
 /**************************************************************************//**
  * Local prototypes
@@ -157,9 +157,9 @@ int main(void)
   /* Misc timers. */
   RTCDRV_Init();
   RTCDRV_AllocateTimer(&gestureTimeoutTimerId);
-  //RTCDRV_AllocateTimer(&millisecondsTimerId);
+  RTCDRV_AllocateTimer(&millisecondsTimerId);
   RTCDRV_AllocateTimer(&periodicUpdateTimerId);
-  //RTCDRV_AllocateTimer(&animationTimerId);
+  RTCDRV_AllocateTimer(&animationTimerId);
 
   GRAPHICS_Init();
 
@@ -170,7 +170,7 @@ int main(void)
   si1147_status = Si1147_Detect_Device(I2C0, SI1147_ADDR);
   GRAPHICS_ShowStatus(si1147_status, si7013_status, false, false);
   /*configure prox sensor to enter low power state*/
-  //Si1147_ConfigureDetection(I2C0, SI1147_ADDR, true);
+  Si1147_ConfigureDetection(I2C0, SI1147_ADDR, true);
 
   /* Set up periodic update of the display.
    * Note: Must update at a much lesser rate than the gesture detection
@@ -205,7 +205,6 @@ int main(void)
     }
     if (demoMode)
     {
-    	/*
       if (processGestures)
       {
         handleGestures();
@@ -214,16 +213,13 @@ int main(void)
           handleGestures();
         processGestures = false;
       }
-      */
       if (updateDisplay)
       {
         GRAPHICS_Draw(logIdx, LOG_LEN, tDataLog, lowBat, UPTIME_TICKS, UPDATE_TICKS_IN_HR);
         updateDisplay = false;
         /* Reset timer for periodic update of the display */
-        /*
         RTCDRV_StartTimer(periodicUpdateTimerId, rtcdrvTimerTypePeriodic,
                           PERIODIC_UPDATE_MS, periodicUpdateCallback, NULL);
-                          */
 
       }
     }
@@ -245,10 +241,8 @@ int main(void)
         //GRAPHICS_ShowStatus(si1147_status, si7013_status, objectDetect&objectDetectPrevious, lowBat);
         objectDetectPrevious = objectDetect;
         /* Reset timer for periodic update of the display */
-        /*
         RTCDRV_StartTimer(periodicUpdateTimerId, rtcdrvTimerTypePeriodic,
                           PERIODIC_UPDATE_MS, periodicUpdateCallback, NULL);
-                          */
 
       }
 
@@ -353,10 +347,8 @@ static void handleGestures(void)
     updateDisplay = true;
     /* This timer runs the animations. E.g if an animation is
      * active this will retrigger a redraw. */
-    /*
     RTCDRV_StartTimer(animationTimerId, rtcdrvTimerTypePeriodic,
                       ANIMATION_UPDATE_MS, animationUpdateCallback, NULL);
-                      */
   }
 }
 
@@ -365,17 +357,15 @@ static void handleGestures(void)
  *****************************************************************************/
 static void enableGestureMode(void)
 {
-  //Si1147_ConfigureDetection(I2C0, SI1147_ADDR, false);
-  //Si1147_SetInterruptOutputEnable(I2C0, SI1147_ADDR, true);
+  Si1147_ConfigureDetection(I2C0, SI1147_ADDR, false);
+  Si1147_SetInterruptOutputEnable(I2C0, SI1147_ADDR, true);
 
   /* Start timer to disable gestures */
   RTCDRV_StartTimer(gestureTimeoutTimerId, rtcdrvTimerTypeOneshot,
                     GESTURE_TIMEOUT_MS, disableGestureMode, NULL);
   /* Start timer to count milliseconds - used for gesture detection */
-  /*
   RTCDRV_StartTimer(millisecondsTimerId, rtcdrvTimerTypePeriodic,
                     5, msTicksCallback, NULL);
-                    */
 }
 
 /**************************************************************************//**
@@ -388,17 +378,17 @@ static void disableGestureMode(RTCDRV_TimerID_t id, void *user)
 {
   (void) id;
   (void) user;
-  //Si1147_ConfigureDetection(I2C0, SI1147_ADDR, true);
+  Si1147_ConfigureDetection(I2C0, SI1147_ADDR, true);
 
   /* Stop counting milliseconds */
-  //RTCDRV_StopTimer(millisecondsTimerId);
+  RTCDRV_StopTimer(millisecondsTimerId);
   /* Increment timer an arbitrary amount of time to account for timer stopping*/
-  //msTicks += 1000;
+  msTicks += 1000;
   demoMode = false;
   GRAPHICS_Sleep();
   /* This timer runs the animations. E.g if an animation is
    * active this will retrigger a redraw. */
-  //RTCDRV_StopTimer(animationTimerId);
+  RTCDRV_StopTimer(animationTimerId);
 }
 
 /**************************************************************************//**
@@ -499,10 +489,8 @@ void PB0_handler(void)
   updateDisplay = true;
   /* This timer runs the animations. E.g if an animation is
    * active this will retrigger a redraw. */
-  /*
   RTCDRV_StartTimer(animationTimerId, rtcdrvTimerTypePeriodic,
                     ANIMATION_UPDATE_MS, animationUpdateCallback, NULL);
-                    */
   xinc          = pb0Action;
   startDemo     = true;
 }
@@ -597,7 +585,7 @@ static void animationUpdateCallback(RTCDRV_TimerID_t id, void *user)
         xinc = 0;
         /* This timer runs the animations. E.g if an animation is
          * active this will retrigger a redraw. */
-        //RTCDRV_StopTimer(animationTimerId);
+        RTCDRV_StopTimer(animationTimerId);
       }
 
       updateDisplay = true;
@@ -619,7 +607,7 @@ static void animationUpdateCallback(RTCDRV_TimerID_t id, void *user)
         yinc = 0;
         /* This timer runs the animations. E.g if an animation is
          * active this will retrigger a redraw. */
-        //RTCDRV_StopTimer(animationTimerId);
+        RTCDRV_StopTimer(animationTimerId);
       }
 
       updateDisplay = true;
