@@ -23,8 +23,9 @@ extern "C" {
 void GRAPHICS_Init(void);
 void GRAPHICS_Sleep(void);
 void GRAPHICS_Wake(void);
-void GRAPHICS_ShowStatus(bool si114x_status, bool si7013_status, bool removeObject, bool lowBat);
-void GRAPHICS_Draw(int logIdx, int logLen, int8_t *tData, bool lowBat, int uptimeTicks, int ticksInHr);
+int GRAPHICS_DisplayIsAwake(void);
+void GRAPHICS_Draw(int displayState, int logIdx, int logLen,
+		int8_t *tData, int8_t *rhData, int8_t *uvData, bool lowBat, int uptimeTicks, int ticksInHr);
 
 #ifdef __cplusplus
 }

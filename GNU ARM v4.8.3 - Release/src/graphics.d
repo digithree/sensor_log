@@ -15,7 +15,7 @@ src/graphics.o: ../src/graphics.c ../src/graphics2.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/EFM32ZG_STK3200/config/displayls013b7dh03config.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/textdisplay.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/retargettextdisplay.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/EFM32ZG_STK3200/examples/weatherstation/background.h
+ ../src/bitmaps.h
 
 ../src/graphics2.h:
 
@@ -51,4 +51,4 @@ src/graphics.o: ../src/graphics.c ../src/graphics2.h \
 
 /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/retargettextdisplay.h:
 
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/EFM32ZG_STK3200/examples/weatherstation/background.h:
+../src/bitmaps.h:
