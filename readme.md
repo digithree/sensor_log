@@ -22,7 +22,7 @@ A reading of each data category is recorded every 15 minutes. 24 hours of data i
 
 ### Display
 
-There are four data viewing screens. The PB0 button switches to the first screen and the PB1 button cycles through each screen, one pre press. The screen will sleep after 5 seconds of on time and either button wakes the screen up.
+There are five data viewing screens. The PB0 button switches to the first screen and the PB1 button cycles through each screen, one pre press. The screen will sleep after 5 seconds of on time and either button wakes the screen up.
 
 #### Screen 1: quadrant display
 
@@ -49,11 +49,19 @@ Shows: temperature, realtive humidity
 
 A full 24 hour graph of temperature and humidity is shown. Vertical (value) ticks and values are shown, as well as horizontal (time) ticks on the graph, divided into hours and half hours. The left-most value is the 0th hour recording, i.e. the time when the device was started. The last write location is shown with a double vertical arrow in the vertical centre. The last value for each data reading is also show in the vertical centre.
 
-### Screen 4: visible light vs. infrared light
+### Screen 4: visible light vs. ir light
 
 Shows: visible light, infrared light
 
 This is the same as screen 3 except for these sensor data readings.
+
+### Screen 5: uv light and infos
+
+Shows: ultraviolet light
+
+(This screen needs work!)
+
+UV light in the scale is shown. Additionally, a the title of the app and develop name appear, as well as the time the app has been on (up time) in quarter hour segments.
 
 ## Energy consumption
 
