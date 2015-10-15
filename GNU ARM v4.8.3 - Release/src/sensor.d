@@ -1,4 +1,5 @@
-src/weatherstation.o: ../src/weatherstation.c \
+src/sensor.o: ../src/sensor.c \
+ /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_algorithm.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/Device/SiliconLabs/EFM32ZG/Include/em_device.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/Device/SiliconLabs/EFM32ZG/Include/efm32zg222f32.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/CMSIS/Include/arm_math.h \
@@ -39,30 +40,13 @@ src/weatherstation.o: ../src/weatherstation.c \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/Device/SiliconLabs/EFM32ZG/Include/efm32zg_dmactrl.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/Device/SiliconLabs/EFM32ZG/Include/efm32zg_af_ports.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/Device/SiliconLabs/EFM32ZG/Include/efm32zg_af_pins.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_chip.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_system.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_cmu.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_bitband.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_emu.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_gpio.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_assert.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/i2cspm.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/EFM32ZG_STK3200/config/i2cspmconfig.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_i2c.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si7013.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_algorithm.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_functions.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_types.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_functions.h \
  /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si1147_i2c.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emdrv/rtcdrv/inc/rtcdriver.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emdrv/common/inc/ecode.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emdrv/config/rtcdrv_config.h \
- ../src/graphics2.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_adc.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/EFM32ZG_STK3200/config/bspconfig.h \
- /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/bsp/bsp_bcp.h \
  ../src/sensor.h
+
+/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_algorithm.h:
 
 /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/Device/SiliconLabs/EFM32ZG/Include/em_device.h:
 
@@ -144,30 +128,6 @@ src/weatherstation.o: ../src/weatherstation.c \
 
 /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/Device/SiliconLabs/EFM32ZG/Include/efm32zg_af_pins.h:
 
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_chip.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_system.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_cmu.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_bitband.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_emu.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_gpio.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_assert.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/i2cspm.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/EFM32ZG_STK3200/config/i2cspmconfig.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_i2c.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si7013.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_algorithm.h:
-
 /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_functions.h:
 
 /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_types.h:
@@ -175,19 +135,5 @@ src/weatherstation.o: ../src/weatherstation.c \
 /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si114x_functions.h:
 
 /Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/drivers/si1147_i2c.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emdrv/rtcdrv/inc/rtcdriver.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emdrv/common/inc/ecode.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emdrv/config/rtcdrv_config.h:
-
-../src/graphics2.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/emlib/inc/em_adc.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/EFM32ZG_STK3200/config/bspconfig.h:
-
-/Applications/SimplicityStudio_v3/developer/sdks/efm32/v2/kits/common/bsp/bsp_bcp.h:
 
 ../src/sensor.h:

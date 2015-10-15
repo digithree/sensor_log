@@ -21,10 +21,13 @@
 #include "i2cspm.h"
 #include "si7013.h"
 #include "si114x_algorithm.h"
+#include "si114x_functions.h"
+#include "si1147_i2c.h"
 #include "rtcdriver.h"
 #include "graphics2.h"
 #include "em_adc.h"
 #include "bspconfig.h"
+#include "sensor.h"
 
 /**************************************************************************//**
  * Local defines
@@ -57,9 +60,9 @@ static volatile bool adcConversionComplete = false;
 static const int UPDATE_TICKS_IN_HR = 4;
 static volatile int UPTIME_TICKS = 0;
 
-static const int NUM_DISPLAY_STATE = 7;
-static const int FIRST_DISPLAY_STATE = 6;
-static volatile int displayState = 6;
+static const int NUM_DISPLAY_STATE = 5;
+static const int FIRST_DISPLAY_STATE = 4;
+static volatile int displayState = 4;
 
 /** Timer used for timing out sreen to save power. */
 RTCDRV_TimerID_t screenTimeoutTimerId;
@@ -99,6 +102,8 @@ int main(void)
   bool             si7013_status, si1147_status;
   int32_t          tempData;
   uint16_t         uvData;
+  uint16_t			irData;
+  uint16_t			visData;
   uint32_t         vBat = 3300;
   bool             lowBatPrevious = true;
   bool             lowBat = false;
@@ -106,8 +111,12 @@ int main(void)
   int 				LOG_LEN = 96;
   int 				logIdx = 0;
   int8_t			tDataLog[96];
-  int8_t			rhDataLog[96];
-  int8_t			uvDataLog[96];
+  uint8_t			rhDataLog[96];
+  uint8_t			uvDataLog[96];
+  uint8_t			irDataLog[96];
+  uint8_t			visDataLog[96];
+
+  si114x_i2c_t handle;
 
   int i;
 
@@ -122,6 +131,8 @@ int main(void)
 	  tDataLog[i] = 0;
 	  rhDataLog[i] = 0;
 	  uvDataLog[i] = 0;
+	  irDataLog[i] = 0;
+	  visDataLog[i] = 0;
   }
 
   /* Misc timers. */
@@ -137,6 +148,7 @@ int main(void)
   si7013_status = Si7013_Detect(I2C0, SI7013_ADDR, NULL);
   si1147_status = Si1147_Detect_Device(I2C0, SI1147_ADDR);
   Si1147_ConfigureDetection(I2C0, SI1147_ADDR, true);
+  Si1147_Detect_Device__SensorCopy(I2C0, SI1147_ADDR);
 
   /* Set up periodic update of the display.
    * Note: Must update at a much lesser rate than the gesture detection
@@ -156,11 +168,29 @@ int main(void)
   {
     if (updateMeasurement)
     {
+      // take new measurements
       performMeasurements(&rhData, &tempData, &uvData, &vBat);
+      Si1147_MeasureIRAndVisLight(I2C0, SI1147_ADDR, &irData, &visData);
       // update log
       tDataLog[logIdx] = (int8_t)(tempData/1000);
-      rhDataLog[logIdx] = (int8_t)(rhData/1000);
-      uvDataLog[logIdx] = (int8_t)uvData;
+      rhDataLog[logIdx] = (uint8_t)(rhData/1000);
+      uvDataLog[logIdx] = (uint8_t)uvData;
+      irDataLog[logIdx] = (uint8_t)((irData>>3)-31);
+      visDataLog[logIdx] = (uint8_t)((visData>>3)-31);
+      /*
+      irData /= 4;
+      if( irData > 255 ) {
+    	  irDataLog[logIdx] = (uint8_t)255;
+      } else {
+    	  irDataLog[logIdx] = (uint8_t)irData;
+      }
+      visData /= 4;
+      if( visData > 255 ) {
+    	  visDataLog[logIdx] = (uint8_t)255;
+      } else {
+    	  visDataLog[logIdx] = (uint8_t)visData;
+      }
+      */
       logIdx++;
       if( logIdx >= LOG_LEN ) {
     	  logIdx = 0;
@@ -180,8 +210,8 @@ int main(void)
     {
     	updateDisplay = false;
     	GRAPHICS_Wake();
-    	GRAPHICS_Draw(displayState, logIdx, LOG_LEN, tDataLog, rhDataLog, uvDataLog, lowBat,
-    			UPTIME_TICKS, UPDATE_TICKS_IN_HR);
+    	GRAPHICS_Draw(displayState, logIdx, LOG_LEN, tDataLog, rhDataLog, uvDataLog, irDataLog, visDataLog, lowBat,
+    			UPTIME_TICKS, UPDATE_TICKS_IN_HR, 0);
     }
 
     EMU_EnterEM2(false);
@@ -300,6 +330,8 @@ void GPIO_Unified_IRQ(void)
 	  /* PB0: Turn on screen and goto first screen */
 	  updateDisplay = true;
 	  displayState = FIRST_DISPLAY_STATE;
+	  RTCDRV_StartTimer(screenTimeoutTimerId, rtcdrvTimerTypePeriodic,
+	  			SCREEN_TIMEOUT_MS, screenTimeoutCallback, NULL);
   }
 
   if (interruptMask & (1 << BSP_GPIO_PB1_PIN))
@@ -309,6 +341,8 @@ void GPIO_Unified_IRQ(void)
 		  displayState = (displayState+1)%NUM_DISPLAY_STATE;
 	  }
 	  updateDisplay = true;
+	  RTCDRV_StartTimer(screenTimeoutTimerId, rtcdrvTimerTypePeriodic,
+	  			SCREEN_TIMEOUT_MS, screenTimeoutCallback, NULL);
   }
 }
 

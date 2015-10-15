@@ -2,21 +2,62 @@
 
 ### Description
 
-An app which logs 24 hours of temperature sensor readings with display display. Made for the Zero Gecko Dev kit with Weatherstation Sensor add-on.
+An app which logs 24 hours of environmental sensor readings with display. Made for the Zero Gecko Dev kit with Weatherstation Sensor add-on.
 
 ## Operation
 
-When the app starts you will be presented with a blank screen. This is because the display is in sleep mode to conserve power. To wake up the display, press the PB_0 button or make a swipe gesture in front of the sensor add-on panel.
+### Sensors
 
-Even when the display is asleep, the device takes a periodic sensor reading. Currently this is set to every 15 minutes. The sensor data log buffer size is set to 96 which gives an exact 24 hour log of data.
+Five kinds of sensor data are recorded. Each has a one character abreviation used in the app, shown in square brackets.
 
-The screen will display for 10 seconds from last button or gesture input before going to sleep again. On the display you will see the temperature plot on the top of the screen. A solid line axis shows the graph left edge and the zero degrees line (temperature is in Celcius). Every 5 degrees there is a tick and dotted vertical line; every 10 degrees the tick is bigger and dotted line denser. The temperature plot is plotted with a solid pixel.
+1. [T]emperature (Celcius)
+2. [R]elative Humidity (in percent)
+3. [U]ltraviolet light (UV index: 1 to 11+)
+4. [V]isible light (adjusted lux)
+5. [I]nfrared light (adjusted lux)
 
-Below the graph is additional information. An up-facing arrow shows the current plot position. Temperature is stored with a moving wrap around pointer. Additionally the current temperature is displayed in text, as is the device up time.
+### Measurement
+
+A reading of each data category is recorded every 15 minutes. 24 hours of data is stored, data is overwritten. The app is extremely low power and will run for a long time when switched on continuously.
+
+### Display
+
+There are four data viewing screens. The PB0 button switches to the first screen and the PB1 button cycles through each screen, one pre press. The screen will sleep after 5 seconds of on time and either button wakes the screen up.
+
+#### Screen 1: quadrant display
+
+Shows: temperature, relative humidity, visible light, infrared.
+
+You will see four concentric circles of 15 pixel radius = 60 pixels total. Sensor values are scaled along the axies starting in the centre:
+
+1. temperature pointing up, scaled between 10 and 30 degrees
+2. relative humidity pointing right, scaled between 40 and 80 percent
+3. visible light pointing right, scaled between 0 and 100
+3. infrared light pointing right, scaled between 0 and 100
+
+Lines are drawn between each of the points to imply an area as a different way to look at the data.
+
+### Screen 2: last 4 hour overview
+
+Shows: all
+
+A graph of each of the 5 sensor readings with a short history of the last four hours is shown. Each graph has vertical (value) ticks and tick numbers showing. Additionally the latest value is shown in text
+
+### Screen 3: temperature vs. relative humidity
+
+Shows: temperature, realtive humidity
+
+A full 24 hour graph of temperature and humidity is shown. Vertical (value) ticks and values are shown, as well as horizontal (time) ticks on the graph, divided into hours and half hours. The left-most value is the 0th hour recording, i.e. the time when the device was started. The last write location is shown with a double vertical arrow in the vertical centre. The last value for each data reading is also show in the vertical centre.
+
+### Screen 4: visible light vs. infrared light
+
+Shows: visible light, infrared light
+
+This is the same as screen 3 except for these sensor data readings.
 
 ## Energy consumption
 
-Silicon Labs have build the dev kit, and all their products, with energy consumption in mind. Using the Simplicity Studio profiler, the energy score is about 5.2 out of 10 when idle for a few minutes.    
+Silicon Labs have build the dev kit, and all their products, with energy consumption in mind. Using the Simplicity Studio profiler, the energy score is about 5 out of 10 when idle for a few minutes.    
 
 I have yet to test how long it will run with 2032 coin cell battery. It's not clear to me yet what the energy scores mean.
 

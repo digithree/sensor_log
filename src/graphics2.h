@@ -25,7 +25,9 @@ void GRAPHICS_Sleep(void);
 void GRAPHICS_Wake(void);
 int GRAPHICS_DisplayIsAwake(void);
 void GRAPHICS_Draw(int displayState, int logIdx, int logLen,
-		int8_t *tData, int8_t *rhData, int8_t *uvData, bool lowBat, int uptimeTicks, int ticksInHr);
+		int8_t *tData, uint8_t *rhData, uint8_t *uvData,
+		uint8_t *irData, uint8_t *visData,
+		bool lowBat, int uptimeTicks, int ticksInHr, uint16_t vis);
 
 #ifdef __cplusplus
 }
